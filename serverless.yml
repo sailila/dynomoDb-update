@@ -1,0 +1,22 @@
+service: flight-booking-update
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs20.19.6
+  region: us-east-1
+  environment:
+    TABLE_NAME: Flightbooking_production
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:UpdateItem
+          Resource:
+            - arn:aws:dynamodb:us-east-1:*:table/Flight_status
+
+functions:
+  updateBooking:
+    handler: index.handler
