@@ -19,8 +19,8 @@ async function abc({ bookingId, flightId, newStatus }) {
     "#b": "bookingStatus"
   },
   ExpressionAttributeValues: {
-    ":newStatus": "pending",
-    ":newBookingStatus": "pending"
+    ":newStatus": "success",
+    ":newBookingStatus": "success"
   }
 };
 
