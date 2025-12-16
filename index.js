@@ -69,8 +69,6 @@ exports.handler = async (event) => {
 
   };
 
-
-
   try {
 
     await dynamo.send(new UpdateCommand(params));
@@ -85,20 +83,15 @@ exports.handler = async (event) => {
 
         message: "DynamoDB updated successfully",
 
-        bookingId,
-
-        flightId,
-
-        status: newStatus
-
       })
 
     };
 
-  } catch (error) {
+  }
+  
+  catch (error) {
 
     console.error("DynamoDB update failed:", error);
-
 
 
     return {
@@ -119,4 +112,11 @@ exports.handler = async (event) => {
 
 };
 
+// Test call
+  ({
+    bookingId: "15625573",
+    flightId: "b3",
+    newStatus: "success",
+
+      })
 
