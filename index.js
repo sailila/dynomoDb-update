@@ -116,6 +116,6 @@ exports.handler = async (event) => {
   ({
     bookingId: "17925573",
     flightId: "b364be91-0553-475a-a0a9-0402a796144d",
-    newStatus: "success",
+    newStatus: "booked",
 
      })
