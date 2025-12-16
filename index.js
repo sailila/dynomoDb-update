@@ -1,41 +1,122 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+
 const { DynamoDBDocumentClient, UpdateCommand } = require("@aws-sdk/lib-dynamodb");
 
-// Create client
+
+
+// Create DynamoDB client
+
 const client = new DynamoDBClient({ region: "us-east-1" });
+
 const dynamo = DynamoDBDocumentClient.from(client);
 
-// Main function
-async function abc({ bookingId, flightId, newStatus }) {
-    const params = {
-        TableName: "Flightbooking_production",
-        Key: {
-            bookingId: String(bookingId),   // or String(bookingId) based on schema
-            flightId:  String(flightId) 
-        },
-         UpdateExpression: "SET #s = :newStatus, #b = :newBookingStatus",
-  ExpressionAttributeNames: {
-    "#s": "status",
-    "#b": "bookingStatus"
-  },
-  ExpressionAttributeValues: {
-    ":newStatus": "success",
-    ":newBookingStatus": "success"
+
+
+// ✅ Lambda handler (THIS IS REQUIRED)
+
+exports.handler = async (event) => {
+
+  console.log("Received event:", JSON.stringify(event));
+
+
+
+  // Read values from event (API Gateway / test event)
+
+  const { bookingId, flightId, newStatus } = event;
+
+
+
+  if (!bookingId || !flightId || !newStatus) {
+
+    return {
+
+      statusCode: 400,
+
+      body: JSON.stringify({ message: "Missing required fields" })
+
+    };
+
   }
+
+
+
+  const params = {
+
+    TableName: "Flightbooking_production",
+    Key: {
+
+      bookingId: String(bookingId),
+
+      flightId: String(flightId)
+    },
+    UpdateExpression: "SET #s = :newStatus, #b = :newBookingStatus",
+
+    ExpressionAttributeNames: {
+
+      "#s": "status",
+
+      "#b": "bookingStatus"
+
+    },
+
+    ExpressionAttributeValues: {
+
+      ":newStatus": success,
+
+      ":newBookingStatus": success,
+
+    }
+
+  };
+
+
+
+  try {
+
+    await dynamo.send(new UpdateCommand(params));
+
+
+
+    return {
+
+      statusCode: 200,
+
+      body: JSON.stringify({
+
+        message: "DynamoDB updated successfully",
+
+        bookingId,
+
+        flightId,
+
+        status: newStatus
+
+      })
+
+    };
+
+  } catch (error) {
+
+    console.error("DynamoDB update failed:", error);
+
+
+
+    return {
+
+      statusCode: 500,
+
+      body: JSON.stringify({
+
+        message: "Update failed",
+
+        error: error.message
+
+      })
+
+    };
+
+  }
+
 };
 
-    try {
-        const data = await dynamo.send(new UpdateCommand(params));
-        console.log("Updated successfully:", data);
-    } catch (err) {
-        console.error("Update error:", err);
-    }
-}
 
-// Test call
-abc({
-    bookingId: "17925573",
-    flightId: "b364be91-0553-475a-a0a9-0402a796144d",
-    newStatus: "success",
-    
-});
