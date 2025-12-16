@@ -36,6 +36,6 @@ async function abc({ bookingId, flightId, newStatus }) {
 abc({
     bookingId: "17925573",
     flightId: "b364be91-0553-475a-a0a9-0402a796144d",
-    newStatus: "Pending",
+    newStatus: "success",
     
 });
