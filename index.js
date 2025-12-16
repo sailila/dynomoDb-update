@@ -61,9 +61,9 @@ exports.handler = async (event) => {
 
     ExpressionAttributeValues: {
 
-      ":newStatus": success,
+      ":newStatus": newStatus,
 
-      ":newBookingStatus": success,
+      ":newBookingStatus": newStatus,
 
     }
 
