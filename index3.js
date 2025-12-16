@@ -3,11 +3,13 @@ const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, UpdateCommand } = require("@aws-sdk/lib-dynamodb");
 
 
+
 // Create DynamoDB client
 
 const client = new DynamoDBClient({ region: "us-east-1" });
 
 const dynamo = DynamoDBDocumentClient.from(client);
+
 
 
 // ✅ Lambda handler (THIS IS REQUIRED)
@@ -16,21 +18,12 @@ exports.handler = async (event) => {
 
   console.log("Received event:", JSON.stringify(event));
 
-let body;
-  try {
-    body = typeof event.body === "string"
-      ? JSON.parse(event.body)
-      : event.body;
-  } catch (err) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ message: "Invalid JSON body" })
-    };
-  }
+
 
   // Read values from event (API Gateway / test event)
 
   const { bookingId, flightId, newStatus } = event;
+
 
 
   if (!bookingId || !flightId || !newStatus) {
@@ -44,6 +37,8 @@ let body;
     };
 
   }
+
+
 
   const params = {
 
@@ -77,6 +72,7 @@ let body;
   try {
 
     await dynamo.send(new UpdateCommand(params));
+
 
 
     return {
