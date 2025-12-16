@@ -114,8 +114,8 @@ exports.handler = async (event) => {
 
 // Test call
   ({
-    bookingId: "15625573",
-    flightId: "b3",
+    bookingId: "17925573",
+    flightId: "b364be91-0553-475a-a0a9-0402a796144d",
     newStatus: "success",
 
       })
