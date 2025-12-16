@@ -8,6 +8,8 @@ provider:
   region: us-east-1
   environment:
     TABLE_NAME: Flightbooking_production
+    deploymentBucket:
+    name: flight-booking-update-serverless-deploy
   iam:
     role:
       statements:
